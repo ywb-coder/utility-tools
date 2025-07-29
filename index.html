@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>实用工具箱 - 现代化工具集合</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- 页面加载动画 -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p>加载中...</p>
+        </div>
+    </div>
+
+    <!-- 主容器 -->
+    <div class="container">
+        <!-- 顶部导航 -->
+        <header class="header">
+            <h1 class="main-title">
+                <i class="fas fa-toolbox"></i>
+                实用工具箱
+            </h1>
+            <button class="settings-btn" id="settingsBtn">
+                <i class="fas fa-cog"></i>
+            </button>
+        </header>
+
+        <!-- 工具卡片网格 -->
+        <main class="tools-grid">
+            <!-- 实时时钟卡片 -->
+            <div class="tool-card clock-card" data-tool="clock">
+                <div class="card-header">
+                    <i class="fas fa-clock"></i>
+                    <h3>实时时钟</h3>
+                </div>
+                <div class="clock-display">
+                    <div class="time" id="currentTime">00:00:00</div>
+                    <div class="date" id="currentDate">2024年1月1日</div>
+                    <div class="weekday" id="currentWeekday">星期一</div>
+                </div>
+            </div>
+
+            <!-- 待办事项卡片 -->
+            <div class="tool-card todo-card" data-tool="todo">
+                <div class="card-header">
+                    <i class="fas fa-list-check"></i>
+                    <h3>待办事项</h3>
+                    <button class="add-todo-btn" id="addTodoBtn">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+                <div class="todo-stats">
+                    <span class="todo-count">今日任务: <span id="todoCount">0</span></span>
+                    <span class="completed-count">已完成: <span id="completedCount">0</span></span>
+                </div>
+                <div class="todo-list" id="todoList">
+                    <!-- 待办事项将动态添加到这里 -->
+                </div>
+            </div>
+
+            <!-- 天气信息卡片 -->
+            <div class="tool-card weather-card" data-tool="weather">
+                <div class="card-header">
+                    <i class="fas fa-cloud-sun"></i>
+                    <h3>天气信息</h3>
+                    <button class="refresh-weather-btn" id="refreshWeatherBtn">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                </div>
+                <div class="weather-display">
+                    <div class="weather-icon">
+                        <i class="fas fa-sun" id="weatherIcon"></i>
+                    </div>
+                    <div class="weather-info">
+                        <div class="temperature" id="temperature">22°C</div>
+                        <div class="weather-desc" id="weatherDesc">晴朗</div>
+                        <div class="location" id="location">北京</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 倒计时器卡片 -->
+            <div class="tool-card timer-card" data-tool="timer">
+                <div class="card-header">
+                    <i class="fas fa-stopwatch"></i>
+                    <h3>倒计时器</h3>
+                    <button class="timer-settings-btn" id="timerSettingsBtn">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                </div>
+                <div class="timer-display">
+                    <div class="timer-circle">
+                        <svg class="progress-ring" width="120" height="120">
+                            <circle class="progress-ring-circle" cx="60" cy="60" r="54"></circle>
+                        </svg>
+                        <div class="timer-time" id="timerTime">00:00</div>
+                    </div>
+                    <div class="timer-controls">
+                        <button class="timer-btn start-btn" id="startTimerBtn">
+                            <i class="fas fa-play"></i>
+                        </button>
+                        <button class="timer-btn pause-btn" id="pauseTimerBtn">
+                            <i class="fas fa-pause"></i>
+                        </button>
+                        <button class="timer-btn reset-btn" id="resetTimerBtn">
+                            <i class="fas fa-stop"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 计算器卡片 -->
+            <div class="tool-card calculator-card" data-tool="calculator">
+                <div class="card-header">
+                    <i class="fas fa-calculator"></i>
+                    <h3>简易计算器</h3>
+                </div>
+                <div class="calculator-display">
+                    <input type="text" class="calc-screen" id="calcScreen" readonly placeholder="0">
+                    <div class="calc-buttons">
+                        <button class="calc-btn clear-btn" data-action="clear">C</button>
+                        <button class="calc-btn operator-btn" data-action="operator" data-operator="/">÷</button>
+                        <button class="calc-btn operator-btn" data-action="operator" data-operator="*">×</button>
+                        <button class="calc-btn operator-btn" data-action="delete">⌫</button>
+                        
+                        <button class="calc-btn number-btn" data-number="7">7</button>
+                        <button class="calc-btn number-btn" data-number="8">8</button>
+                        <button class="calc-btn number-btn" data-number="9">9</button>
+                        <button class="calc-btn operator-btn" data-action="operator" data-operator="-">-</button>
+                        
+                        <button class="calc-btn number-btn" data-number="4">4</button>
+                        <button class="calc-btn number-btn" data-number="5">5</button>
+                        <button class="calc-btn number-btn" data-number="6">6</button>
+                        <button class="calc-btn operator-btn" data-action="operator" data-operator="+">+</button>
+                        
+                        <button class="calc-btn number-btn" data-number="1">1</button>
+                        <button class="calc-btn number-btn" data-number="2">2</button>
+                        <button class="calc-btn number-btn" data-number="3">3</button>
+                        <button class="calc-btn equals-btn" data-action="equals" rowspan="2">=</button>
+                        
+                        <button class="calc-btn number-btn zero-btn" data-number="0">0</button>
+                        <button class="calc-btn number-btn" data-number=".">.</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 便签卡片 -->
+            <div class="tool-card notes-card" data-tool="notes">
+                <div class="card-header">
+                    <i class="fas fa-sticky-note"></i>
+                    <h3>快速便签</h3>
+                    <button class="save-notes-btn" id="saveNotesBtn">
+                        <i class="fas fa-save"></i>
+                    </button>
+                </div>
+                <div class="notes-display">
+                    <textarea class="notes-textarea" id="notesTextarea" placeholder="在这里记录您的想法..."></textarea>
+                    <div class="notes-info">
+                        <span class="char-count">字符数: <span id="charCount">0</span></span>
+                        <span class="last-saved" id="lastSaved">未保存</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 设置面板 -->
+    <div class="settings-panel" id="settingsPanel">
+        <div class="settings-content">
+            <div class="settings-header">
+                <h3>设置</h3>
+                <button class="close-settings-btn" id="closeSettingsBtn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="settings-body">
+                <div class="setting-item">
+                    <label for="themeSelect">主题模式</label>
+                    <select id="themeSelect">
+                        <option value="light">浅色模式</option>
+                        <option value="dark">深色模式</option>
+                        <option value="auto">跟随系统</option>
+                    </select>
+                </div>
+                <div class="setting-item">
+                    <label for="cityInput">城市设置</label>
+                    <input type="text" id="cityInput" placeholder="输入城市名称">
+                </div>
+                <div class="setting-item">
+                    <label>
+                        <input type="checkbox" id="animationsToggle" checked>
+                        启用动画效果
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 待办事项添加弹窗 -->
+    <div class="modal" id="todoModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>添加待办事项</h3>
+                <button class="close-modal-btn" id="closeTodoModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="text" id="todoInput" placeholder="输入待办事项..." maxlength="100">
+                <div class="todo-options">
+                    <label>
+                        <input type="checkbox" id="todoUrgent">
+                        <span class="checkmark"></span>
+                        紧急任务
+                    </label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelTodoBtn">取消</button>
+                <button class="btn btn-primary" id="confirmTodoBtn">添加</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 倒计时设置弹窗 -->
+    <div class="modal" id="timerModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>设置倒计时</h3>
+                <button class="close-modal-btn" id="closeTimerModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="time-inputs">
+                    <div class="time-input-group">
+                        <label>分钟</label>
+                        <input type="number" id="minutesInput" min="0" max="59" value="5">
+                    </div>
+                    <div class="time-input-group">
+                        <label>秒钟</label>
+                        <input type="number" id="secondsInput" min="0" max="59" value="0">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelTimerBtn">取消</button>
+                <button class="btn btn-primary" id="confirmTimerBtn">确定</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
