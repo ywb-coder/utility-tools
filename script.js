@@ -169,7 +169,7 @@ function addTodo() {
         renderTodos();
         updateTodoStats();
         closeTodoModalHandler();
-        showNotification(window.i18n ? window.i18n.t('todoAdded') : '待办事项已添加');
+        showNotification(window.i18n ? window.i18n.t('todoAdded') : 'Todo item added');
     }
 }
 
@@ -178,7 +178,10 @@ function toggleTodo(index) {
     saveTodos();
     renderTodos();
     updateTodoStats();
-    showNotification(todos[index].completed ? '任务已完成' : '任务已恢复');
+    const message = todos[index].completed ? 
+        (window.i18n ? window.i18n.t('taskCompleted') : 'Task completed') : 
+        (window.i18n ? window.i18n.t('taskRestored') : 'Task restored');
+    showNotification(message);
 }
 
 function deleteTodo(index) {
@@ -186,7 +189,7 @@ function deleteTodo(index) {
     saveTodos();
     renderTodos();
     updateTodoStats();
-    showNotification('待办事项已删除');
+    showNotification(window.i18n ? window.i18n.t('todoDeleted') : 'Todo item deleted');
 }
 
 function updateTodoStats() {
@@ -202,7 +205,7 @@ function saveTodos() {
 
 // 初始化天气
 function initializeWeather() {
-    const savedCity = localStorage.getItem('weatherCity') || '北京';
+    const savedCity = localStorage.getItem('weatherCity') || 'Beijing';
     locationElement.textContent = savedCity;
     updateWeather();
 }
@@ -219,7 +222,7 @@ function updateWeather() {
     const weatherCard = document.querySelector('.weather-card');
     weatherCard.style.background = weatherData.gradient;
     
-    showNotification('天气信息已更新');
+    showNotification(window.i18n ? window.i18n.t('weatherUpdated') : 'Weather info updated');
 }
 
 function getSimulatedWeather() {
@@ -227,19 +230,19 @@ function getSimulatedWeather() {
         {
             icon: 'fa-sun',
             temperature: '22°C',
-            description: '晴朗',
+            description: window.i18n ? window.i18n.t('sunny') : 'Sunny',
             gradient: 'linear-gradient(135deg, #74b9ff 0%, #0984e3 100%)'
         },
         {
             icon: 'fa-cloud',
             temperature: '18°C',
-            description: '多云',
+            description: window.i18n ? window.i18n.t('cloudy') : 'Cloudy',
             gradient: 'linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%)'
         },
         {
             icon: 'fa-cloud-rain',
             temperature: '15°C',
-            description: '小雨',
+            description: window.i18n ? window.i18n.t('rainy') : 'Rainy',
             gradient: 'linear-gradient(135deg, #81ecec 0%, #00b894 100%)'
         }
     ];
@@ -270,7 +273,10 @@ function setTimer() {
         updateTimerDisplay();
         updateProgressRing();
         closeTimerModalHandler();
-        showNotification(`倒计时设置为 ${minutes}分${seconds}秒`);
+        const message = window.i18n ? 
+            `${window.i18n.t('timerSet')} ${minutes}${window.i18n.t('minutes')}${seconds}${window.i18n.t('seconds')}` :
+            `Timer set to ${minutes} minutes ${seconds} seconds`;
+        showNotification(message);
     }
 }
 
@@ -284,7 +290,7 @@ function startTimer() {
             
             if (timerRemaining <= 0) {
                 stopTimer();
-                showNotification('倒计时结束！');
+                showNotification(window.i18n ? window.i18n.t('timerFinished') : 'Timer finished!');
                 playTimerSound();
             }
         }, 1000);
@@ -450,23 +456,24 @@ function saveNotes() {
     localStorage.setItem('notes', notes);
     
     const now = new Date().toLocaleString('zh-CN');
-    lastSaved.textContent = `已保存 ${now}`;
+    const savedText = window.i18n ? window.i18n.t('saved') : 'Saved';
+    lastSaved.textContent = `${savedText} ${now}`;
     
-    showNotification('便签已保存');
+    showNotification(window.i18n ? window.i18n.t('notesSaved') : 'Notes saved');
     
     // 3秒后恢复显示
     setTimeout(() => {
-        lastSaved.textContent = '已保存';
+        lastSaved.textContent = savedText;
     }, 3000);
 }
 
 // 初始化设置
 function initializeSettings() {
-    // 加载保存的设置
-    const savedTheme = localStorage.getItem('theme') || 'light';
-    const savedCity = localStorage.getItem('weatherCity') || '北京';
+    // 加载保存的设置，默认深色主题和英文
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    const savedCity = localStorage.getItem('weatherCity') || 'Beijing';
     const savedAnimations = localStorage.getItem('animations') !== 'false';
-    const savedLanguage = localStorage.getItem('language') || 'zh-CN';
+    const savedLanguage = localStorage.getItem('language') || 'en';
     
     themeSelect.value = savedTheme;
     cityInput.value = savedCity;
@@ -696,11 +703,11 @@ document.addEventListener('visibilitychange', () => {
 
 // 网络状态监听
 window.addEventListener('online', () => {
-    showNotification('网络连接已恢复');
+    showNotification(window.i18n ? window.i18n.t('networkOnline') : 'Network connection restored');
 });
 
 window.addEventListener('offline', () => {
-    showNotification('网络连接已断开');
+    showNotification(window.i18n ? window.i18n.t('networkOffline') : 'Network connection lost');
 });
 
 // 触摸设备支持
@@ -750,9 +757,11 @@ function debounce(func, wait) {
 const autoSaveNotes = debounce(() => {
     const notes = notesTextarea.value;
     localStorage.setItem('notes', notes);
-    lastSaved.textContent = '自动保存';
+    const autoSavedText = window.i18n ? window.i18n.t('autoSaved') : 'Auto Saved';
+    lastSaved.textContent = autoSavedText;
     setTimeout(() => {
-        lastSaved.textContent = '已保存';
+        const savedText = window.i18n ? window.i18n.t('saved') : 'Saved';
+        lastSaved.textContent = savedText;
     }, 2000);
 }, 2000);
 
@@ -765,9 +774,10 @@ function exportData() {
         todos: todos,
         notes: localStorage.getItem('notes') || '',
         settings: {
-            theme: localStorage.getItem('theme') || 'light',
-            city: localStorage.getItem('weatherCity') || '北京',
-            animations: localStorage.getItem('animations') !== 'false'
+            theme: localStorage.getItem('theme') || 'dark',
+            city: localStorage.getItem('weatherCity') || 'Beijing',
+            animations: localStorage.getItem('animations') !== 'false',
+            language: localStorage.getItem('language') || 'en'
         },
         exportDate: new Date().toISOString()
     };
@@ -784,7 +794,7 @@ function exportData() {
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
     
-    showNotification('数据导出成功');
+    showNotification(window.i18n ? window.i18n.t('dataExported') : 'Data exported successfully');
 }
 
 // 数据导入功能
@@ -825,11 +835,19 @@ function importData(file) {
                     animationsToggle.checked = data.settings.animations;
                     applyAnimationSettings(data.settings.animations);
                 }
+                
+                if (data.settings.language) {
+                    localStorage.setItem('language', data.settings.language);
+                    if (languageSelect) languageSelect.value = data.settings.language;
+                    if (window.i18n) {
+                        window.i18n.switchLanguage(data.settings.language);
+                    }
+                }
             }
             
-            showNotification('数据导入成功');
+            showNotification(window.i18n ? window.i18n.t('dataImported') : 'Data imported successfully');
         } catch (error) {
-            showNotification('数据导入失败：文件格式错误');
+            showNotification(window.i18n ? window.i18n.t('dataImportError') : 'Data import failed: Invalid file format');
             console.error('导入错误:', error);
         }
     };
@@ -842,14 +860,18 @@ function addImportExportButtons() {
     
     const exportSection = document.createElement('div');
     exportSection.className = 'setting-item';
+    const dataManagementText = window.i18n ? window.i18n.t('dataManagement') : 'Data Management';
+    const exportDataText = window.i18n ? window.i18n.t('exportData') : 'Export Data';
+    const importDataText = window.i18n ? window.i18n.t('importData') : 'Import Data';
+    
     exportSection.innerHTML = `
-        <label>数据管理</label>
+        <label>${dataManagementText}</label>
         <div style="display: flex; gap: 10px; margin-top: 10px;">
             <button class="btn btn-secondary" onclick="exportData()">
-                <i class="fas fa-download"></i> 导出数据
+                <i class="fas fa-download"></i> ${exportDataText}
             </button>
             <label class="btn btn-secondary" style="margin: 0; cursor: pointer;">
-                <i class="fas fa-upload"></i> 导入数据
+                <i class="fas fa-upload"></i> ${importDataText}
                 <input type="file" accept=".json" style="display: none;" onchange="importData(this.files[0])">
             </label>
         </div>
@@ -880,7 +902,7 @@ window.addEventListener('load', () => {
 // 错误处理
 window.addEventListener('error', (e) => {
     console.error('全局错误:', e.error);
-    showNotification('发生了一个错误，请刷新页面重试');
+    showNotification(window.i18n ? window.i18n.t('error') : 'An error occurred, please refresh the page');
 });
 
 // 未处理的 Promise 拒绝
