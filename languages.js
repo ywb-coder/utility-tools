@@ -844,6 +844,155 @@ function getAvailableLanguages() {
     }));
 }
 
+// 为新工具添加多语言翻译
+Object.keys(languages).forEach(langCode => {
+    const lang = languages[langCode];
+    
+    // 添加新工具的翻译
+    const newTranslations = {
+        // 文本处理工具
+        'textTools': langCode === 'zh-CN' ? '文本处理' : 
+                    langCode === 'en' ? 'Text Tools' :
+                    langCode === 'es' ? 'Herramientas de Texto' :
+                    langCode === 'ko' ? '텍스트 도구' :
+                    langCode === 'ja' ? 'テキストツール' :
+                    langCode === 'nl' ? 'Tekstgereedschap' :
+                    langCode === 'pt' ? 'Ferramentas de Texto' :
+                    'เครื่องมือข้อความ',
+        'textConverted': langCode === 'zh-CN' ? '文本已转换' : 
+                        langCode === 'en' ? 'Text converted' :
+                        langCode === 'es' ? 'Texto convertido' :
+                        langCode === 'ko' ? '텍스트가 변환되었습니다' :
+                        langCode === 'ja' ? 'テキストが変換されました' :
+                        langCode === 'nl' ? 'Tekst geconverteerd' :
+                        langCode === 'pt' ? 'Texto convertido' :
+                        'ข้อความถูกแปลงแล้ว',
+        'textAnalyzed': langCode === 'zh-CN' ? '文本已分析' : 
+                       langCode === 'en' ? 'Text analyzed' :
+                       langCode === 'es' ? 'Texto analizado' :
+                       langCode === 'ko' ? '텍스트가 분석되었습니다' :
+                       langCode === 'ja' ? 'テキストが分析されました' :
+                       langCode === 'nl' ? 'Tekst geanalyseerd' :
+                       langCode === 'pt' ? 'Texto analisado' :
+                       'ข้อความถูกวิเคราะห์แล้ว',
+        'textReversed': langCode === 'zh-CN' ? '文本已反转' : 
+                       langCode === 'en' ? 'Text reversed' :
+                       langCode === 'es' ? 'Texto invertido' :
+                       langCode === 'ko' ? '텍스트가 뒤집혔습니다' :
+                       langCode === 'ja' ? 'テキストが反転されました' :
+                       langCode === 'nl' ? 'Tekst omgekeerd' :
+                       langCode === 'pt' ? 'Texto invertido' :
+                       'ข้อความถูกกลับด้านแล้ว',
+        
+        // 二维码生成器
+        'qrGenerated': langCode === 'zh-CN' ? '二维码已生成' : 
+                      langCode === 'en' ? 'QR code generated' :
+                      langCode === 'es' ? 'Código QR generado' :
+                      langCode === 'ko' ? 'QR 코드가 생성되었습니다' :
+                      langCode === 'ja' ? 'QRコードが生成されました' :
+                      langCode === 'nl' ? 'QR-code gegenereerd' :
+                      langCode === 'pt' ? 'Código QR gerado' :
+                      'QR โค้ดถูกสร้างแล้ว',
+        'qrDownload': langCode === 'zh-CN' ? '二维码下载功能即将推出' : 
+                     langCode === 'en' ? 'QR code download feature coming soon' :
+                     langCode === 'es' ? 'Función de descarga de código QR próximamente' :
+                     langCode === 'ko' ? 'QR 코드 다운로드 기능 곧 출시' :
+                     langCode === 'ja' ? 'QRコードダウンロード機能は近日公開' :
+                     langCode === 'nl' ? 'QR-code downloadfunctie komt binnenkort' :
+                     langCode === 'pt' ? 'Recurso de download de código QR em breve' :
+                     'ฟีเจอร์ดาวน์โหลด QR โค้ดเร็วๆ นี้',
+        
+        // 密码生成器
+        'passwordGenerated': langCode === 'zh-CN' ? '密码已生成' : 
+                            langCode === 'en' ? 'Password generated' :
+                            langCode === 'es' ? 'Contraseña generada' :
+                            langCode === 'ko' ? '비밀번호가 생성되었습니다' :
+                            langCode === 'ja' ? 'パスワードが生成されました' :
+                            langCode === 'nl' ? 'Wachtwoord gegenereerd' :
+                            langCode === 'pt' ? 'Senha gerada' :
+                            'รหัสผ่านถูกสร้างแล้ว',
+        'passwordCopied': langCode === 'zh-CN' ? '密码已复制到剪贴板' : 
+                         langCode === 'en' ? 'Password copied to clipboard' :
+                         langCode === 'es' ? 'Contraseña copiada al portapapeles' :
+                         langCode === 'ko' ? '비밀번호가 클립보드에 복사되었습니다' :
+                         langCode === 'ja' ? 'パスワードがクリップボードにコピーされました' :
+                         langCode === 'nl' ? 'Wachtwoord gekopieerd naar klembord' :
+                         langCode === 'pt' ? 'Senha copiada para a área de transferência' :
+                         'รหัสผ่านถูกคัดลอกไปยังคลิปบอร์ดแล้ว',
+        'selectPasswordOptions': langCode === 'zh-CN' ? '请至少选择一个选项' : 
+                                langCode === 'en' ? 'Please select at least one option' :
+                                langCode === 'es' ? 'Por favor selecciona al menos una opción' :
+                                langCode === 'ko' ? '최소 하나의 옵션을 선택해주세요' :
+                                langCode === 'ja' ? '少なくとも1つのオプションを選択してください' :
+                                langCode === 'nl' ? 'Selecteer ten minste één optie' :
+                                langCode === 'pt' ? 'Por favor, selecione pelo menos uma opção' :
+                                'กรุณาเลือกอย่างน้อยหนึ่งตัวเลือก',
+        'copyFailed': langCode === 'zh-CN' ? '复制失败' : 
+                     langCode === 'en' ? 'Failed to copy' :
+                     langCode === 'es' ? 'Error al copiar' :
+                     langCode === 'ko' ? '복사 실패' :
+                     langCode === 'ja' ? 'コピーに失敗しました' :
+                     langCode === 'nl' ? 'Kopiëren mislukt' :
+                     langCode === 'pt' ? 'Falha ao copiar' :
+                     'คัดลอกไม่สำเร็จ',
+        
+        // 颜色工具
+        'randomColorGenerated': langCode === 'zh-CN' ? '随机颜色已生成' : 
+                               langCode === 'en' ? 'Random color generated' :
+                               langCode === 'es' ? 'Color aleatorio generado' :
+                               langCode === 'ko' ? '랜덤 색상이 생성되었습니다' :
+                               langCode === 'ja' ? 'ランダムカラーが生成されました' :
+                               langCode === 'nl' ? 'Willekeurige kleur gegenereerd' :
+                               langCode === 'pt' ? 'Cor aleatória gerada' :
+                               'สีสุ่มถูกสร้างแล้ว',
+        
+        // Base64编码工具
+        'textEncoded': langCode === 'zh-CN' ? '文本已编码为Base64' : 
+                      langCode === 'en' ? 'Text encoded to Base64' :
+                      langCode === 'es' ? 'Texto codificado a Base64' :
+                      langCode === 'ko' ? '텍스트가 Base64로 인코딩되었습니다' :
+                      langCode === 'ja' ? 'テキストがBase64にエンコードされました' :
+                      langCode === 'nl' ? 'Tekst gecodeerd naar Base64' :
+                      langCode === 'pt' ? 'Texto codificado para Base64' :
+                      'ข้อความถูกเข้ารหัสเป็น Base64',
+        'textDecoded': langCode === 'zh-CN' ? '文本已从Base64解码' : 
+                      langCode === 'en' ? 'Text decoded from Base64' :
+                      langCode === 'es' ? 'Texto decodificado de Base64' :
+                      langCode === 'ko' ? '텍스트가 Base64에서 디코딩되었습니다' :
+                      langCode === 'ja' ? 'テキストがBase64からデコードされました' :
+                      langCode === 'nl' ? 'Tekst gedecodeerd van Base64' :
+                      langCode === 'pt' ? 'Texto decodificado de Base64' :
+                      'ข้อความถูกถอดรหัสจาก Base64',
+        'encodeFailed': langCode === 'zh-CN' ? '编码失败' : 
+                       langCode === 'en' ? 'Encoding failed' :
+                       langCode === 'es' ? 'Error de codificación' :
+                       langCode === 'ko' ? '인코딩 실패' :
+                       langCode === 'ja' ? 'エンコードに失敗しました' :
+                       langCode === 'nl' ? 'Codering mislukt' :
+                       langCode === 'pt' ? 'Falha na codificação' :
+                       'การเข้ารหัสล้มเหลว',
+        'decodeFailed': langCode === 'zh-CN' ? '解码失败' : 
+                       langCode === 'en' ? 'Decoding failed' :
+                       langCode === 'es' ? 'Error de decodificación' :
+                       langCode === 'ko' ? '디코딩 실패' :
+                       langCode === 'ja' ? 'デコードに失敗しました' :
+                       langCode === 'nl' ? 'Decodering mislukt' :
+                       langCode === 'pt' ? 'Falha na decodificação' :
+                       'การถอดรหัสล้มเหลว',
+        'contentSwapped': langCode === 'zh-CN' ? '内容已交换' : 
+                         langCode === 'en' ? 'Content swapped' :
+                         langCode === 'es' ? 'Contenido intercambiado' :
+                         langCode === 'ko' ? '내용이 교체되었습니다' :
+                         langCode === 'ja' ? 'コンテンツが交換されました' :
+                         langCode === 'nl' ? 'Inhoud gewisseld' :
+                         langCode === 'pt' ? 'Conteúdo trocado' :
+                         'เนื้อหาถูกสลับแล้ว'
+    };
+    
+    // 合并新翻译到现有语言包
+    Object.assign(lang.translations, newTranslations);
+});
+
 // 导出语言相关函数
 window.i18n = {
     t,

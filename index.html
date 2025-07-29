@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>实用工具箱 - 现代化工具集合</title>
+    <title data-i18n="pageTitle">Utility Toolbox - Modern Tool Collection</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
     <script src="languages.js"></script>
@@ -23,7 +23,7 @@
         <header class="header">
             <h1 class="main-title">
                 <i class="fas fa-toolbox"></i>
-                实用工具箱
+                <span data-i18n="mainTitle">Utility Toolbox</span>
             </h1>
             <button class="settings-btn" id="settingsBtn">
                 <i class="fas fa-cog"></i>
@@ -49,7 +49,7 @@
             <div class="tool-card todo-card" data-tool="todo">
                 <div class="card-header">
                     <i class="fas fa-list-check"></i>
-                    <h3>待办事项</h3>
+                    <h3 data-i18n="todoTitle">Todo List</h3>
                     <button class="add-todo-btn" id="addTodoBtn">
                         <i class="fas fa-plus"></i>
                     </button>
@@ -67,7 +67,7 @@
             <div class="tool-card weather-card" data-tool="weather">
                 <div class="card-header">
                     <i class="fas fa-cloud-sun"></i>
-                    <h3>天气信息</h3>
+                    <h3 data-i18n="weatherTitle">Weather Info</h3>
                     <button class="refresh-weather-btn" id="refreshWeatherBtn">
                         <i class="fas fa-sync-alt"></i>
                     </button>
@@ -88,7 +88,7 @@
             <div class="tool-card timer-card" data-tool="timer">
                 <div class="card-header">
                     <i class="fas fa-stopwatch"></i>
-                    <h3>倒计时器</h3>
+                    <h3 data-i18n="timerTitle">Timer</h3>
                     <button class="timer-settings-btn" id="timerSettingsBtn">
                         <i class="fas fa-cog"></i>
                     </button>
@@ -118,7 +118,7 @@
             <div class="tool-card calculator-card" data-tool="calculator">
                 <div class="card-header">
                     <i class="fas fa-calculator"></i>
-                    <h3>简易计算器</h3>
+                    <h3 data-i18n="calculatorTitle">Calculator</h3>
                 </div>
                 <div class="calculator-display">
                     <input type="text" class="calc-screen" id="calcScreen" readonly placeholder="0">
@@ -153,7 +153,7 @@
             <div class="tool-card notes-card" data-tool="notes">
                 <div class="card-header">
                     <i class="fas fa-sticky-note"></i>
-                    <h3>快速便签</h3>
+                    <h3 data-i18n="notesTitle">Quick Notes</h3>
                     <button class="save-notes-btn" id="saveNotesBtn">
                         <i class="fas fa-save"></i>
                     </button>
@@ -163,6 +163,227 @@
                     <div class="notes-info">
                         <span class="char-count">字符数: <span id="charCount">0</span></span>
                         <span class="last-saved" id="lastSaved">未保存</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 文本处理工具卡片 -->
+            <div class="tool-card text-tools-card" data-tool="text-tools">
+                <div class="card-header">
+                    <i class="fas fa-text-width"></i>
+                    <h3>文本处理</h3>
+                    <button class="text-tools-btn" id="textToolsBtn">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                </div>
+                <div class="text-tools-display">
+                    <div class="text-input-area">
+                        <textarea class="text-input" id="textInput" placeholder="输入要处理的文本..."></textarea>
+                    </div>
+                    <div class="text-output-area">
+                        <textarea class="text-output" id="textOutput" placeholder="处理结果将显示在这里..." readonly></textarea>
+                    </div>
+                    <div class="text-tools-controls">
+                        <button class="tool-btn" id="upperCaseBtn">大写</button>
+                        <button class="tool-btn" id="lowerCaseBtn">小写</button>
+                        <button class="tool-btn" id="capitalizeBtn">首字母大写</button>
+                        <button class="tool-btn" id="reverseTextBtn">反转</button>
+                        <button class="tool-btn" id="removeSpacesBtn">去空格</button>
+                        <button class="tool-btn" id="copyTextBtn">复制</button>
+                        <button class="tool-btn" id="clearTextBtn">清空</button>
+                    </div>
+                    <div class="text-stats" id="textStats">
+                        <span>字符: 0</span>
+                        <span>单词: 0</span>
+                        <span>行数: 0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 单位转换器卡片 -->
+            <div class="tool-card converter-card" data-tool="converter">
+                <div class="card-header">
+                    <i class="fas fa-exchange-alt"></i>
+                    <h3>单位转换</h3>
+                    <select class="converter-type" id="converterType">
+                        <option value="length">长度</option>
+                        <option value="weight">重量</option>
+                        <option value="temperature">温度</option>
+                    </select>
+                </div>
+                <div class="converter-display">
+                    <div class="converter-input">
+                        <input type="number" id="fromValue" placeholder="输入数值">
+                        <select id="fromUnit">
+                            <option value="m">米</option>
+                            <option value="cm">厘米</option>
+                            <option value="km">千米</option>
+                            <option value="ft">英尺</option>
+                            <option value="in">英寸</option>
+                        </select>
+                    </div>
+                    <div class="converter-arrow">
+                        <i class="fas fa-arrow-down"></i>
+                    </div>
+                    <div class="converter-output">
+                        <input type="text" id="toValue" readonly placeholder="转换结果">
+                        <select id="toUnit">
+                            <option value="m">米</option>
+                            <option value="cm">厘米</option>
+                            <option value="km">千米</option>
+                            <option value="ft">英尺</option>
+                            <option value="in">英寸</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 二维码生成器卡片 -->
+            <div class="tool-card qrcode-card" data-tool="qrcode">
+                <div class="card-header">
+                    <i class="fas fa-qrcode"></i>
+                    <h3>二维码生成</h3>
+                    <button class="download-qr-btn" id="downloadQrBtn">
+                        <i class="fas fa-download"></i>
+                    </button>
+                </div>
+                <div class="qrcode-display">
+                    <div class="qr-input">
+                        <textarea id="qrInput" placeholder="输入要生成二维码的内容..."></textarea>
+                    </div>
+                    <div class="qr-canvas" id="qrCanvas">
+                        <div class="qr-placeholder">
+                            <i class="fas fa-qrcode"></i>
+                            <p>输入内容生成二维码</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 密码生成器卡片 -->
+            <div class="tool-card password-card" data-tool="password">
+                <div class="card-header">
+                    <i class="fas fa-key"></i>
+                    <h3>密码生成</h3>
+                    <button class="generate-password-btn" id="generatePasswordBtn">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                </div>
+                <div class="password-display">
+                    <div class="password-output">
+                        <input type="text" id="generatedPassword" readonly placeholder="生成的密码将显示在这里">
+                        <button class="copy-password-btn" id="copyPasswordBtn">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                    <div class="password-options">
+                        <div class="option-group">
+                            <label>长度: <span id="passwordLength">12</span></label>
+                            <input type="range" id="lengthSlider" min="4" max="50" value="12">
+                        </div>
+                        <div class="option-checkboxes">
+                            <label><input type="checkbox" id="includeUppercase" checked> 大写字母</label>
+                            <label><input type="checkbox" id="includeLowercase" checked> 小写字母</label>
+                            <label><input type="checkbox" id="includeNumbers" checked> 数字</label>
+                            <label><input type="checkbox" id="includeSymbols"> 符号</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 颜色工具卡片 -->
+            <div class="tool-card color-card" data-tool="color">
+                <div class="card-header">
+                    <i class="fas fa-palette"></i>
+                    <h3>颜色工具</h3>
+                    <button class="random-color-btn" id="randomColorBtn">
+                        <i class="fas fa-dice"></i>
+                    </button>
+                </div>
+                <div class="color-display">
+                    <div class="color-picker-area">
+                        <input type="color" id="colorPicker" value="#3498db">
+                        <div class="color-preview" id="colorPreview"></div>
+                    </div>
+                    <div class="color-values">
+                        <div class="color-value">
+                            <label>HEX:</label>
+                            <input type="text" id="hexValue" readonly>
+                        </div>
+                        <div class="color-value">
+                            <label>RGB:</label>
+                            <input type="text" id="rgbValue" readonly>
+                        </div>
+                        <div class="color-value">
+                            <label>HSL:</label>
+                            <input type="text" id="hslValue" readonly>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Base64编码工具卡片 -->
+            <div class="tool-card base64-card" data-tool="base64">
+                <div class="card-header">
+                    <i class="fas fa-code"></i>
+                    <h3>Base64编码</h3>
+                    <button class="swap-base64-btn" id="swapBase64Btn">
+                        <i class="fas fa-exchange-alt"></i>
+                    </button>
+                </div>
+                <div class="base64-display">
+                    <div class="base64-input">
+                        <textarea id="base64Input" placeholder="输入要编码的文本..."></textarea>
+                        <button class="encode-btn" id="encodeBtn">编码</button>
+                    </div>
+                    <div class="base64-output">
+                        <textarea id="base64Output" readonly placeholder="编码结果将显示在这里..."></textarea>
+                        <button class="decode-btn" id="decodeBtn">解码</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 数学工具卡片 -->
+            <div class="tool-card math-card" data-tool="math">
+                <div class="card-header">
+                    <i class="fas fa-calculator"></i>
+                    <h3>数学工具</h3>
+                    <select class="math-tool-type" id="mathToolType">
+                        <option value="base">进制转换</option>
+                        <option value="percentage">百分比计算</option>
+                        <option value="random">随机数生成</option>
+                    </select>
+                </div>
+                <div class="math-display" id="mathDisplay">
+                    <!-- 进制转换界面 -->
+                    <div class="base-converter" id="baseConverter">
+                        <div class="base-input-group">
+                            <input type="text" id="baseInput" placeholder="输入数值">
+                            <select id="fromBase">
+                                <option value="2">二进制</option>
+                                <option value="8">八进制</option>
+                                <option value="10" selected>十进制</option>
+                                <option value="16">十六进制</option>
+                            </select>
+                        </div>
+                        <div class="base-results">
+                            <div class="base-result">
+                                <label>二进制:</label>
+                                <input type="text" id="binaryResult" readonly>
+                            </div>
+                            <div class="base-result">
+                                <label>八进制:</label>
+                                <input type="text" id="octalResult" readonly>
+                            </div>
+                            <div class="base-result">
+                                <label>十进制:</label>
+                                <input type="text" id="decimalResult" readonly>
+                            </div>
+                            <div class="base-result">
+                                <label>十六进制:</label>
+                                <input type="text" id="hexResult" readonly>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -202,8 +423,6 @@
                     <select id="languageSelect">
                         <option value="zh-CN">🇨🇳 简体中文</option>
                         <option value="en">🇺🇸 English</option>
-                        <option value="es">🇪🇸 Español</option>
-                        <option value="ko">🇰🇷 한국어</option>
                         <option value="ja">🇯🇵 日本語</option>
                         <option value="nl">🇳🇱 Nederlands</option>
                         <option value="pt">🇵🇹 Português</option>
@@ -218,13 +437,13 @@
     <div class="modal" id="todoModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3>添加待办事项</h3>
+                <h3 data-i18n="addTodo">Add Todo Item</h3>
                 <button class="close-modal-btn" id="closeTodoModal">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
             <div class="modal-body">
-                <input type="text" id="todoInput" placeholder="输入待办事项..." maxlength="100">
+                <input type="text" id="todoInput" data-i18n-placeholder="todoPlaceholder" placeholder="Enter todo item..." maxlength="100">
                 <div class="todo-options">
                     <label>
                         <input type="checkbox" id="todoUrgent">
@@ -268,6 +487,8 @@
         </div>
     </div>
 
+    <script src="i18n.js"></script>
     <script src="script.js"></script>
+    <script src="new-tools.js"></script>
 </body>
 </html>

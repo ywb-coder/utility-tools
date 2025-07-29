@@ -65,6 +65,18 @@ const cityInput = document.getElementById('cityInput');
 const animationsToggle = document.getElementById('animationsToggle');
 const languageSelect = document.getElementById('languageSelect');
 
+// 文本处理工具元素
+const textInput = document.getElementById('textInput');
+const textOutput = document.getElementById('textOutput');
+const textStats = document.getElementById('textStats');
+const uppercaseBtn = document.getElementById('upperCaseBtn');
+const lowercaseBtn = document.getElementById('lowerCaseBtn');
+const capitalizeBtn = document.getElementById('capitalizeBtn');
+const reverseBtn = document.getElementById('reverseTextBtn');
+const removeSpacesBtn = document.getElementById('removeSpacesBtn');
+const copyTextBtn = document.getElementById('copyTextBtn');
+const clearTextBtn = document.getElementById('clearTextBtn');
+
 // 页面加载完成后初始化
 document.addEventListener('DOMContentLoaded', function() {
     // 立即隐藏加载动画并初始化应用
@@ -82,8 +94,19 @@ function initializeApp() {
     initializeTimer();
     initializeCalculator();
     initializeNotes();
+    initializeTextProcessor();
     initializeSettings();
     initializeEventListeners();
+    
+    // 初始化新工具（确保new-tools.js中的函数被调用）
+    console.log('检查initializeNewTools函数:', typeof initializeNewTools);
+    if (typeof initializeNewTools === 'function') {
+        console.log('开始初始化新工具...');
+        initializeNewTools();
+        console.log('新工具初始化完成');
+    } else {
+        console.error('initializeNewTools函数未找到');
+    }
     
     // 添加卡片动画
     animateCards();
@@ -122,9 +145,9 @@ function updateClock() {
         }
     }
     
-    currentTime.textContent = timeString;
-    currentDate.textContent = dateString;
-    currentWeekday.textContent = weekdayString;
+    if (currentTime) currentTime.textContent = timeString;
+    if (currentDate) currentDate.textContent = dateString;
+    if (currentWeekday) currentWeekday.textContent = weekdayString;
 }
 
 // 初始化待办事项
@@ -134,6 +157,7 @@ function initializeTodos() {
 }
 
 function renderTodos() {
+    if (!todoList) return;
     todoList.innerHTML = '';
     todos.forEach((todo, index) => {
         const todoItem = createTodoElement(todo, index);
@@ -169,7 +193,7 @@ function addTodo() {
         renderTodos();
         updateTodoStats();
         closeTodoModalHandler();
-        showNotification(window.i18n ? window.i18n.t('todoAdded') : 'Todo item added');
+        showNotification(window.i18n ? window.i18n.t('todoAdded') : '待办事项已添加');
     }
 }
 
@@ -179,8 +203,8 @@ function toggleTodo(index) {
     renderTodos();
     updateTodoStats();
     const message = todos[index].completed ? 
-        (window.i18n ? window.i18n.t('taskCompleted') : 'Task completed') : 
-        (window.i18n ? window.i18n.t('taskRestored') : 'Task restored');
+        (window.i18n ? window.i18n.t('taskCompleted') : '任务已完成') : 
+        (window.i18n ? window.i18n.t('taskRestored') : '任务已恢复');
     showNotification(message);
 }
 
@@ -189,14 +213,14 @@ function deleteTodo(index) {
     saveTodos();
     renderTodos();
     updateTodoStats();
-    showNotification(window.i18n ? window.i18n.t('todoDeleted') : 'Todo item deleted');
+    showNotification(window.i18n ? window.i18n.t('todoDeleted') : '待办事项已删除');
 }
 
 function updateTodoStats() {
     const total = todos.length;
     const completed = todos.filter(todo => todo.completed).length;
-    todoCount.textContent = total;
-    completedCount.textContent = completed;
+    if (todoCount) todoCount.textContent = total;
+    if (completedCount) completedCount.textContent = completed;
 }
 
 function saveTodos() {
@@ -206,23 +230,26 @@ function saveTodos() {
 // 初始化天气
 function initializeWeather() {
     const savedCity = localStorage.getItem('weatherCity') || 'Beijing';
-    locationElement.textContent = savedCity;
-    updateWeather();
+    if (locationElement) locationElement.textContent = savedCity;
+    updateWeather(); // 初始化时不显示通知
 }
 
-function updateWeather() {
+function updateWeather(showNotify = false) {
     // 模拟天气数据（实际项目中应该调用真实的天气API）
     const weatherData = getSimulatedWeather();
     
-    weatherIcon.className = `fas ${weatherData.icon}`;
-    temperature.textContent = weatherData.temperature;
-    weatherDesc.textContent = weatherData.description;
+    if (weatherIcon) weatherIcon.className = `fas ${weatherData.icon}`;
+    if (temperature) temperature.textContent = weatherData.temperature;
+    if (weatherDesc) weatherDesc.textContent = weatherData.description;
     
     // 更新天气卡片背景
     const weatherCard = document.querySelector('.weather-card');
-    weatherCard.style.background = weatherData.gradient;
+    if (weatherCard) weatherCard.style.background = weatherData.gradient;
     
-    showNotification(window.i18n ? window.i18n.t('weatherUpdated') : 'Weather info updated');
+    // 只有手动刷新时才显示通知
+    if (showNotify) {
+        showNotification(window.i18n ? window.i18n.t('weatherUpdated') : '天气信息已更新');
+    }
 }
 
 function getSimulatedWeather() {
@@ -230,19 +257,19 @@ function getSimulatedWeather() {
         {
             icon: 'fa-sun',
             temperature: '22°C',
-            description: window.i18n ? window.i18n.t('sunny') : 'Sunny',
+            description: window.i18n ? window.i18n.t('sunny') : '晴天',
             gradient: 'linear-gradient(135deg, #74b9ff 0%, #0984e3 100%)'
         },
         {
             icon: 'fa-cloud',
             temperature: '18°C',
-            description: window.i18n ? window.i18n.t('cloudy') : 'Cloudy',
+            description: window.i18n ? window.i18n.t('cloudy') : '多云',
             gradient: 'linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%)'
         },
         {
             icon: 'fa-cloud-rain',
             temperature: '15°C',
-            description: window.i18n ? window.i18n.t('rainy') : 'Rainy',
+            description: window.i18n ? window.i18n.t('rainy') : '雨天',
             gradient: 'linear-gradient(135deg, #81ecec 0%, #00b894 100%)'
         }
     ];
@@ -257,6 +284,7 @@ function initializeTimer() {
 }
 
 function setupProgressRing() {
+    if (!progressRingCircle) return;
     const radius = 54;
     const circumference = 2 * Math.PI * radius;
     progressRingCircle.style.strokeDasharray = circumference;
@@ -274,8 +302,8 @@ function setTimer() {
         updateProgressRing();
         closeTimerModalHandler();
         const message = window.i18n ? 
-            `${window.i18n.t('timerSet')} ${minutes}${window.i18n.t('minutes')}${seconds}${window.i18n.t('seconds')}` :
-            `Timer set to ${minutes} minutes ${seconds} seconds`;
+            `${window.i18n.t('timerSet')} ${minutes}分钟${seconds}秒` :
+            `计时器设置为 ${minutes} 分钟 ${seconds} 秒`;
         showNotification(message);
     }
 }
@@ -290,13 +318,13 @@ function startTimer() {
             
             if (timerRemaining <= 0) {
                 stopTimer();
-                showNotification(window.i18n ? window.i18n.t('timerFinished') : 'Timer finished!');
+                showNotification(window.i18n ? window.i18n.t('timerFinished') : '计时器结束！');
                 playTimerSound();
             }
         }, 1000);
         
-        startTimerBtn.style.display = 'none';
-        pauseTimerBtn.style.display = 'inline-flex';
+        if (startTimerBtn) startTimerBtn.style.display = 'none';
+        if (pauseTimerBtn) pauseTimerBtn.style.display = 'inline-flex';
     }
 }
 
@@ -304,8 +332,8 @@ function pauseTimer() {
     if (isTimerRunning) {
         isTimerRunning = false;
         clearInterval(timerInterval);
-        startTimerBtn.style.display = 'inline-flex';
-        pauseTimerBtn.style.display = 'none';
+        if (startTimerBtn) startTimerBtn.style.display = 'inline-flex';
+        if (pauseTimerBtn) pauseTimerBtn.style.display = 'none';
     }
 }
 
@@ -315,24 +343,27 @@ function resetTimer() {
     timerRemaining = timerDuration;
     updateTimerDisplay();
     updateProgressRing();
-    startTimerBtn.style.display = 'inline-flex';
-    pauseTimerBtn.style.display = 'none';
+    if (startTimerBtn) startTimerBtn.style.display = 'inline-flex';
+    if (pauseTimerBtn) pauseTimerBtn.style.display = 'none';
 }
 
 function stopTimer() {
     isTimerRunning = false;
     clearInterval(timerInterval);
-    startTimerBtn.style.display = 'inline-flex';
-    pauseTimerBtn.style.display = 'none';
+    if (startTimerBtn) startTimerBtn.style.display = 'inline-flex';
+    if (pauseTimerBtn) pauseTimerBtn.style.display = 'none';
 }
 
 function updateTimerDisplay() {
     const minutes = Math.floor(timerRemaining / 60);
     const seconds = timerRemaining % 60;
-    timerTime.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    if (timerTime) {
+        timerTime.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    }
 }
 
 function updateProgressRing() {
+    if (!progressRingCircle) return;
     const radius = 54;
     const circumference = 2 * Math.PI * radius;
     const progress = timerDuration > 0 ? (timerDuration - timerRemaining) / timerDuration : 0;
@@ -343,26 +374,32 @@ function updateProgressRing() {
 }
 
 function playTimerSound() {
-    // 创建简单的提示音
-    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    const oscillator = audioContext.createOscillator();
-    const gainNode = audioContext.createGain();
-    
-    oscillator.connect(gainNode);
-    gainNode.connect(audioContext.destination);
-    
-    oscillator.frequency.value = 800;
-    oscillator.type = 'sine';
-    
-    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 1);
-    
-    oscillator.start(audioContext.currentTime);
-    oscillator.stop(audioContext.currentTime + 1);
+    try {
+        // 创建简单的提示音
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        
+        oscillator.frequency.value = 800;
+        oscillator.type = 'sine';
+        
+        gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 1);
+        
+        oscillator.start(audioContext.currentTime);
+        oscillator.stop(audioContext.currentTime + 1);
+    } catch (error) {
+        console.log('Audio context not available');
+    }
 }
 
 // 初始化计算器
 function initializeCalculator() {
+    if (!calcScreen || !calcButtons) return;
+    
     let currentInput = '';
     let operator = '';
     let previousInput = '';
@@ -439,6 +476,8 @@ function calculate(a, b, operator) {
 
 // 初始化便签
 function initializeNotes() {
+    if (!notesTextarea) return;
+    
     const savedNotes = localStorage.getItem('notes') || '';
     notesTextarea.value = savedNotes;
     updateCharCount();
@@ -447,46 +486,162 @@ function initializeNotes() {
 }
 
 function updateCharCount() {
+    if (!notesTextarea || !charCount) return;
     const count = notesTextarea.value.length;
     charCount.textContent = count;
 }
 
 function saveNotes() {
+    if (!notesTextarea) return;
+    
     const notes = notesTextarea.value;
     localStorage.setItem('notes', notes);
     
     const now = new Date().toLocaleString('zh-CN');
-    const savedText = window.i18n ? window.i18n.t('saved') : 'Saved';
-    lastSaved.textContent = `${savedText} ${now}`;
+    const savedText = window.i18n ? window.i18n.t('saved') : '已保存';
+    if (lastSaved) lastSaved.textContent = `${savedText} ${now}`;
     
-    showNotification(window.i18n ? window.i18n.t('notesSaved') : 'Notes saved');
+    showNotification(window.i18n ? window.i18n.t('notesSaved') : '便签已保存');
     
     // 3秒后恢复显示
     setTimeout(() => {
-        lastSaved.textContent = savedText;
+        if (lastSaved) lastSaved.textContent = savedText;
     }, 3000);
+}
+
+// 初始化文本处理工具
+function initializeTextProcessor() {
+    if (!textInput) return;
+    
+    // 监听输入变化，实时更新统计信息
+    textInput.addEventListener('input', updateTextStats);
+    
+    // 初始化统计信息
+    updateTextStats();
+}
+
+function updateTextStats() {
+    if (!textInput || !textStats) return;
+    
+    const text = textInput.value;
+    const chars = text.length;
+    const charsNoSpaces = text.replace(/\s/g, '').length;
+    const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+    const lines = text.split('\n').length;
+    const paragraphs = text.trim() ? text.split(/\n\s*\n/).length : 0;
+    
+    textStats.innerHTML = `
+        <div class="stat-item">
+            <span class="stat-label">字符数：</span>
+            <span class="stat-value">${chars}</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-label">字符数（不含空格）：</span>
+            <span class="stat-value">${charsNoSpaces}</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-label">单词数：</span>
+            <span class="stat-value">${words}</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-label">行数：</span>
+            <span class="stat-value">${lines}</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-label">段落数：</span>
+            <span class="stat-value">${paragraphs}</span>
+        </div>
+    `;
+}
+
+// 文本处理功能
+function convertToUppercase() {
+    if (!textInput || !textOutput) return;
+    const text = textInput.value;
+    textOutput.value = text.toUpperCase();
+    showNotification(window.i18n ? window.i18n.t('textUppercased') : '文本已转换为大写');
+}
+
+function convertToLowercase() {
+    if (!textInput || !textOutput) return;
+    const text = textInput.value;
+    textOutput.value = text.toLowerCase();
+    showNotification(window.i18n ? window.i18n.t('textLowercased') : '文本已转换为小写');
+}
+
+function capitalizeText() {
+    if (!textInput || !textOutput) return;
+    const text = textInput.value;
+    textOutput.value = text.replace(/\b\w/g, l => l.toUpperCase());
+    showNotification(window.i18n ? window.i18n.t('textCapitalized') : '文本已转换为首字母大写');
+}
+
+function reverseText() {
+    if (!textInput || !textOutput) return;
+    const text = textInput.value;
+    textOutput.value = text.split('').reverse().join('');
+    showNotification(window.i18n ? window.i18n.t('textReversed') : '文本已反转');
+}
+
+function removeSpaces() {
+    if (!textInput || !textOutput) return;
+    const text = textInput.value;
+    textOutput.value = text.replace(/\s+/g, ' ').trim();
+    showNotification(window.i18n ? window.i18n.t('spacesRemoved') : '多余空格已移除');
+}
+
+function copyText() {
+    if (!textOutput) return;
+    
+    textOutput.select();
+    textOutput.setSelectionRange(0, 99999); // 移动端兼容
+    
+    try {
+        document.execCommand('copy');
+        showNotification(window.i18n ? window.i18n.t('textCopied') : '文本已复制到剪贴板');
+    } catch (err) {
+        // 使用现代API
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(textOutput.value).then(() => {
+                showNotification(window.i18n ? window.i18n.t('textCopied') : '文本已复制到剪贴板');
+            }).catch(() => {
+                showNotification(window.i18n ? window.i18n.t('copyFailed') : '复制失败，请手动复制');
+            });
+        } else {
+            showNotification(window.i18n ? window.i18n.t('copyFailed') : '复制失败，请手动复制');
+        }
+    }
+}
+
+function clearText() {
+    if (textInput) textInput.value = '';
+    if (textOutput) textOutput.value = '';
+    updateTextStats();
+    showNotification(window.i18n ? window.i18n.t('textCleared') : '文本已清空');
 }
 
 // 初始化设置
 function initializeSettings() {
-    // 加载保存的设置，默认深色主题和英文
+    // 加载保存的设置，默认深色主题和中文
     const savedTheme = localStorage.getItem('theme') || 'dark';
-    const savedCity = localStorage.getItem('weatherCity') || 'Beijing';
+    const savedCity = localStorage.getItem('weatherCity') || '北京';
     const savedAnimations = localStorage.getItem('animations') !== 'false';
-    const savedLanguage = localStorage.getItem('language') || 'en';
+    const savedLanguage = localStorage.getItem('language') || 'zh-CN';
     
-    themeSelect.value = savedTheme;
-    cityInput.value = savedCity;
-    animationsToggle.checked = savedAnimations;
+    if (themeSelect) themeSelect.value = savedTheme;
+    if (cityInput) cityInput.value = savedCity;
+    if (animationsToggle) animationsToggle.checked = savedAnimations;
     if (languageSelect) languageSelect.value = savedLanguage;
     
     applyTheme(savedTheme);
     applyAnimationSettings(savedAnimations);
     
-    // 初始化语言
-    if (window.i18n) {
-        window.i18n.switchLanguage(savedLanguage);
-    }
+    // 初始化语言 - 确保i18n已加载
+    setTimeout(() => {
+        if (window.i18n && window.i18n.switchLanguage) {
+            window.i18n.switchLanguage(savedLanguage);
+        }
+    }, 100);
 }
 
 function applyTheme(theme) {
@@ -511,17 +666,21 @@ function applyAnimationSettings(enabled) {
 // 事件监听器
 function initializeEventListeners() {
     // 设置面板
-    settingsBtn.addEventListener('click', () => {
-        settingsPanel.classList.add('open');
-    });
+    if (settingsBtn) {
+        settingsBtn.addEventListener('click', () => {
+            if (settingsPanel) settingsPanel.classList.add('open');
+        });
+    }
     
-    closeSettingsBtn.addEventListener('click', () => {
-        settingsPanel.classList.remove('open');
-    });
+    if (closeSettingsBtn) {
+        closeSettingsBtn.addEventListener('click', () => {
+            if (settingsPanel) settingsPanel.classList.remove('open');
+        });
+    }
     
     // 点击外部关闭设置面板
     document.addEventListener('click', (e) => {
-        if (settingsPanel.classList.contains('open') && 
+        if (settingsPanel && settingsPanel.classList.contains('open') && 
             !settingsPanel.contains(e.target) && 
             !settingsBtn.contains(e.target)) {
             settingsPanel.classList.remove('open');
@@ -529,68 +688,94 @@ function initializeEventListeners() {
     });
     
     // 待办事项模态框
-    addTodoBtn.addEventListener('click', () => {
-        todoModal.classList.add('open');
-        todoInput.focus();
-    });
+    if (addTodoBtn) {
+        addTodoBtn.addEventListener('click', () => {
+            if (todoModal) {
+                todoModal.classList.add('open');
+                if (todoInput) todoInput.focus();
+            }
+        });
+    }
     
-    closeTodoModal.addEventListener('click', closeTodoModalHandler);
-    cancelTodoBtn.addEventListener('click', closeTodoModalHandler);
-    confirmTodoBtn.addEventListener('click', addTodo);
+    if (closeTodoModal) closeTodoModal.addEventListener('click', closeTodoModalHandler);
+    if (cancelTodoBtn) cancelTodoBtn.addEventListener('click', closeTodoModalHandler);
+    if (confirmTodoBtn) confirmTodoBtn.addEventListener('click', addTodo);
     
     // 回车键添加待办事项
-    todoInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-            addTodo();
-        }
-    });
+    if (todoInput) {
+        todoInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                addTodo();
+            }
+        });
+    }
     
     // 倒计时器模态框
-    timerSettingsBtn.addEventListener('click', () => {
-        timerModal.classList.add('open');
-        minutesInput.focus();
-    });
+    if (timerSettingsBtn) {
+        timerSettingsBtn.addEventListener('click', () => {
+            if (timerModal) {
+                timerModal.classList.add('open');
+                if (minutesInput) minutesInput.focus();
+            }
+        });
+    }
     
-    closeTimerModal.addEventListener('click', closeTimerModalHandler);
-    cancelTimerBtn.addEventListener('click', closeTimerModalHandler);
-    confirmTimerBtn.addEventListener('click', setTimer);
+    if (closeTimerModal) closeTimerModal.addEventListener('click', closeTimerModalHandler);
+    if (cancelTimerBtn) cancelTimerBtn.addEventListener('click', closeTimerModalHandler);
+    if (confirmTimerBtn) confirmTimerBtn.addEventListener('click', setTimer);
     
     // 倒计时器控制
-    startTimerBtn.addEventListener('click', startTimer);
-    pauseTimerBtn.addEventListener('click', pauseTimer);
-    resetTimerBtn.addEventListener('click', resetTimer);
+    if (startTimerBtn) startTimerBtn.addEventListener('click', startTimer);
+    if (pauseTimerBtn) pauseTimerBtn.addEventListener('click', pauseTimer);
+    if (resetTimerBtn) resetTimerBtn.addEventListener('click', resetTimer);
     
     // 天气刷新
-    refreshWeatherBtn.addEventListener('click', updateWeather);
+    if (refreshWeatherBtn) refreshWeatherBtn.addEventListener('click', () => updateWeather(true));
     
     // 便签保存
-    saveNotesBtn.addEventListener('click', saveNotes);
+    if (saveNotesBtn) saveNotesBtn.addEventListener('click', saveNotes);
+    
+    // 文本处理工具按钮
+    if (uppercaseBtn) uppercaseBtn.addEventListener('click', convertToUppercase);
+    if (lowercaseBtn) lowercaseBtn.addEventListener('click', convertToLowercase);
+    if (capitalizeBtn) capitalizeBtn.addEventListener('click', capitalizeText);
+    if (reverseBtn) reverseBtn.addEventListener('click', reverseText);
+    if (removeSpacesBtn) removeSpacesBtn.addEventListener('click', removeSpaces);
+    if (copyTextBtn) copyTextBtn.addEventListener('click', copyText);
+    if (clearTextBtn) clearTextBtn.addEventListener('click', clearText);
     
     // 设置变更
-    themeSelect.addEventListener('change', (e) => {
-        const theme = e.target.value;
-        localStorage.setItem('theme', theme);
-        applyTheme(theme);
-    });
+    if (themeSelect) {
+        themeSelect.addEventListener('change', (e) => {
+            const theme = e.target.value;
+            localStorage.setItem('theme', theme);
+            applyTheme(theme);
+        });
+    }
     
-    cityInput.addEventListener('change', (e) => {
-        const city = e.target.value;
-        localStorage.setItem('weatherCity', city);
-        locationElement.textContent = city;
-        updateWeather();
-    });
+    if (cityInput) {
+        cityInput.addEventListener('change', (e) => {
+            const city = e.target.value;
+            localStorage.setItem('weatherCity', city);
+            if (locationElement) locationElement.textContent = city;
+            updateWeather(true);
+        });
+    }
     
-    animationsToggle.addEventListener('change', (e) => {
-        const enabled = e.target.checked;
-        localStorage.setItem('animations', enabled);
-        applyAnimationSettings(enabled);
-    });
+    if (animationsToggle) {
+        animationsToggle.addEventListener('change', (e) => {
+            const enabled = e.target.checked;
+            localStorage.setItem('animations', enabled);
+            applyAnimationSettings(enabled);
+        });
+    }
     
     // 语言切换
     if (languageSelect) {
         languageSelect.addEventListener('change', (e) => {
             const language = e.target.value;
-            if (window.i18n) {
+            localStorage.setItem('language', language);
+            if (window.i18n && window.i18n.switchLanguage) {
                 window.i18n.switchLanguage(language);
             }
         });
@@ -609,7 +794,7 @@ function initializeEventListeners() {
             document.querySelectorAll('.modal.open').forEach(modal => {
                 modal.classList.remove('open');
             });
-            if (settingsPanel.classList.contains('open')) {
+            if (settingsPanel && settingsPanel.classList.contains('open')) {
                 settingsPanel.classList.remove('open');
             }
         }
@@ -617,13 +802,13 @@ function initializeEventListeners() {
 }
 
 function closeTodoModalHandler() {
-    todoModal.classList.remove('open');
-    todoInput.value = '';
-    todoUrgent.checked = false;
+    if (todoModal) todoModal.classList.remove('open');
+    if (todoInput) todoInput.value = '';
+    if (todoUrgent) todoUrgent.checked = false;
 }
 
 function closeTimerModalHandler() {
-    timerModal.classList.remove('open');
+    if (timerModal) timerModal.classList.remove('open');
 }
 
 // 通知系统
@@ -658,7 +843,9 @@ function showNotification(message) {
     setTimeout(() => {
         notification.style.transform = 'translateX(100%)';
         setTimeout(() => {
-            document.body.removeChild(notification);
+            if (document.body.contains(notification)) {
+                document.body.removeChild(notification);
+            }
         }, 300);
     }, 3000);
 }
@@ -674,8 +861,10 @@ document.addEventListener('keydown', (e) => {
     // Ctrl/Cmd + N 添加待办事项
     if ((e.ctrlKey || e.metaKey) && e.key === 'n') {
         e.preventDefault();
-        todoModal.classList.add('open');
-        todoInput.focus();
+        if (todoModal) {
+            todoModal.classList.add('open');
+            if (todoInput) todoInput.focus();
+        }
     }
     
     // 空格键 开始/暂停倒计时
@@ -701,14 +890,16 @@ document.addEventListener('visibilitychange', () => {
     }
 });
 
-// 网络状态监听
-window.addEventListener('online', () => {
-    showNotification(window.i18n ? window.i18n.t('networkOnline') : 'Network connection restored');
-});
+// 网络状态监听 - 延迟注册，避免初始化时触发
+setTimeout(() => {
+    window.addEventListener('online', () => {
+        showNotification(window.i18n ? window.i18n.t('networkOnline') : '网络连接已恢复');
+    });
 
-window.addEventListener('offline', () => {
-    showNotification(window.i18n ? window.i18n.t('networkOffline') : 'Network connection lost');
-});
+    window.addEventListener('offline', () => {
+        showNotification(window.i18n ? window.i18n.t('networkOffline') : '网络连接已断开');
+    });
+}, 2000);
 
 // 触摸设备支持
 if ('ontouchstart' in window) {
@@ -755,168 +946,21 @@ function debounce(func, wait) {
 
 // 自动保存便签（防抖）
 const autoSaveNotes = debounce(() => {
+    if (!notesTextarea) return;
     const notes = notesTextarea.value;
     localStorage.setItem('notes', notes);
-    const autoSavedText = window.i18n ? window.i18n.t('autoSaved') : 'Auto Saved';
-    lastSaved.textContent = autoSavedText;
+    const autoSavedText = window.i18n ? window.i18n.t('autoSaved') : '自动保存';
+    if (lastSaved) lastSaved.textContent = autoSavedText;
     setTimeout(() => {
-        const savedText = window.i18n ? window.i18n.t('saved') : 'Saved';
-        lastSaved.textContent = savedText;
+        const savedText = window.i18n ? window.i18n.t('saved') : '已保存';
+        if (lastSaved) lastSaved.textContent = savedText;
     }, 2000);
 }, 2000);
 
 // 为便签添加自动保存
-notesTextarea.addEventListener('input', autoSaveNotes);
-
-// 数据导出功能
-function exportData() {
-    const data = {
-        todos: todos,
-        notes: localStorage.getItem('notes') || '',
-        settings: {
-            theme: localStorage.getItem('theme') || 'dark',
-            city: localStorage.getItem('weatherCity') || 'Beijing',
-            animations: localStorage.getItem('animations') !== 'false',
-            language: localStorage.getItem('language') || 'en'
-        },
-        exportDate: new Date().toISOString()
-    };
-    
-    const dataStr = JSON.stringify(data, null, 2);
-    const dataBlob = new Blob([dataStr], {type: 'application/json'});
-    const url = URL.createObjectURL(dataBlob);
-    
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `工具箱数据_${new Date().toLocaleDateString('zh-CN')}.json`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-    
-    showNotification(window.i18n ? window.i18n.t('dataExported') : 'Data exported successfully');
+if (notesTextarea) {
+    notesTextarea.addEventListener('input', autoSaveNotes);
 }
-
-// 数据导入功能
-function importData(file) {
-    const reader = new FileReader();
-    reader.onload = function(e) {
-        try {
-            const data = JSON.parse(e.target.result);
-            
-            if (data.todos) {
-                todos = data.todos;
-                saveTodos();
-                renderTodos();
-                updateTodoStats();
-            }
-            
-            if (data.notes) {
-                localStorage.setItem('notes', data.notes);
-                notesTextarea.value = data.notes;
-                updateCharCount();
-            }
-            
-            if (data.settings) {
-                if (data.settings.theme) {
-                    localStorage.setItem('theme', data.settings.theme);
-                    themeSelect.value = data.settings.theme;
-                    applyTheme(data.settings.theme);
-                }
-                
-                if (data.settings.city) {
-                    localStorage.setItem('weatherCity', data.settings.city);
-                    cityInput.value = data.settings.city;
-                    locationElement.textContent = data.settings.city;
-                }
-                
-                if (data.settings.animations !== undefined) {
-                    localStorage.setItem('animations', data.settings.animations);
-                    animationsToggle.checked = data.settings.animations;
-                    applyAnimationSettings(data.settings.animations);
-                }
-                
-                if (data.settings.language) {
-                    localStorage.setItem('language', data.settings.language);
-                    if (languageSelect) languageSelect.value = data.settings.language;
-                    if (window.i18n) {
-                        window.i18n.switchLanguage(data.settings.language);
-                    }
-                }
-            }
-            
-            showNotification(window.i18n ? window.i18n.t('dataImported') : 'Data imported successfully');
-        } catch (error) {
-            showNotification(window.i18n ? window.i18n.t('dataImportError') : 'Data import failed: Invalid file format');
-            console.error('导入错误:', error);
-        }
-    };
-    reader.readAsText(file);
-}
-
-// 添加导入导出按钮到设置面板
-function addImportExportButtons() {
-    const settingsBody = document.querySelector('.settings-body');
-    
-    const exportSection = document.createElement('div');
-    exportSection.className = 'setting-item';
-    const dataManagementText = window.i18n ? window.i18n.t('dataManagement') : 'Data Management';
-    const exportDataText = window.i18n ? window.i18n.t('exportData') : 'Export Data';
-    const importDataText = window.i18n ? window.i18n.t('importData') : 'Import Data';
-    
-    exportSection.innerHTML = `
-        <label>${dataManagementText}</label>
-        <div style="display: flex; gap: 10px; margin-top: 10px;">
-            <button class="btn btn-secondary" onclick="exportData()">
-                <i class="fas fa-download"></i> ${exportDataText}
-            </button>
-            <label class="btn btn-secondary" style="margin: 0; cursor: pointer;">
-                <i class="fas fa-upload"></i> ${importDataText}
-                <input type="file" accept=".json" style="display: none;" onchange="importData(this.files[0])">
-            </label>
-        </div>
-    `;
-    
-    settingsBody.appendChild(exportSection);
-}
-
-// 页面完全加载后执行
-window.addEventListener('load', () => {
-    addImportExportButtons();
-    
-    // 检查是否支持 Service Worker
-    if ('serviceWorker' in navigator) {
-        // 可以在这里注册 Service Worker 实现离线功能
-        console.log('支持 Service Worker');
-    }
-    
-    // 检查是否支持 Web Notifications
-    if ('Notification' in window) {
-        if (Notification.permission === 'default') {
-            // 可以请求通知权限
-            console.log('可以请求通知权限');
-        }
-    }
-});
-
-// 错误处理
-window.addEventListener('error', (e) => {
-    console.error('全局错误:', e.error);
-    showNotification(window.i18n ? window.i18n.t('error') : 'An error occurred, please refresh the page');
-});
-
-// 未处理的 Promise 拒绝
-window.addEventListener('unhandledrejection', (e) => {
-    console.error('未处理的 Promise 拒绝:', e.reason);
-    e.preventDefault();
-});
-
-// 页面卸载前保存数据
-window.addEventListener('beforeunload', () => {
-    // 确保所有数据都已保存
-    const notes = notesTextarea.value;
-    localStorage.setItem('notes', notes);
-});
 
 // 添加一些实用的工具函数
 const utils = {
@@ -954,4 +998,3 @@ console.log('💡 快捷键提示：');
 console.log('   Ctrl/Cmd + S: 保存便签');
 console.log('   Ctrl/Cmd + N: 添加待办事项');
 console.log('   空格键: 开始/暂停倒计时');
-console.log('   ESC: 关闭弹窗');

@@ -855,37 +855,89 @@ body {
     text-align: center;
 }
 
+/* 文本处理工具样式 */
+.text-tools-display {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.text-input-area, .text-output-area {
+    width: 100%;
+}
+
+.text-input, .text-output {
+    width: 100%;
+    min-height: 80px;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background: var(--card-bg);
+    color: var(--text-color);
+    font-family: inherit;
+    font-size: 14px;
+    resize: vertical;
+}
+
+.text-output {
+    background: var(--bg-secondary);
+}
+
+.text-tools-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.tool-btn {
+    padding: 8px 12px;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 12px;
+    transition: var(--transition);
+}
+
+.tool-btn:hover {
+    background: var(--primary-hover);
+    transform: translateY(-1px);
+}
+
+.text-stats {
+    display: flex;
+    gap: 15px;
+    font-size: 12px;
+    color: var(--text-secondary);
+    padding: 10px;
+    background: var(--bg-secondary);
+    border-radius: var(--border-radius);
+}
+
+.stat-item {
+    display: flex;
+    gap: 5px;
+}
+
+.stat-label {
+    color: var(--text-secondary);
+}
+
+.stat-value {
+    color: var(--primary-color);
+    font-weight: 500;
+}
+
 /* 响应式设计 */
 @media (max-width: 768px) {
-    .container {
-        padding: 15px;
-    }
-    
-    .main-title {
-        font-size: 2rem;
-    }
-    
     .tools-grid {
         grid-template-columns: 1fr;
-        gap: 20px;
+        gap: 15px;
     }
     
     .tool-card {
-        padding: 20px;
-    }
-    
-    .time {
-        font-size: 2.5rem;
-    }
-    
-    .temperature {
-        font-size: 2rem;
-    }
-    
-    .weather-display {
-        flex-direction: column;
-        text-align: center;
-        gap: 15px;
+        min-height: auto;
     }
     
     .calc-buttons {
@@ -893,50 +945,620 @@ body {
     }
     
     .calc-btn {
-        padding: 12px;
-        font-size: 1rem;
+        height: 50px;
+        font-size: 16px;
+    }
+    
+    .timer-circle {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .progress-ring {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .timer-time {
+        font-size: 16px;
+    }
+    
+    .notes-textarea {
+        min-height: 120px;
     }
     
     .settings-panel {
         width: 100%;
-        right: -100%;
+        right: 0;
     }
     
-    .modal-content {
-        width: 95%;
-        margin: 20px;
+    .text-tools-controls {
+        justify-content: center;
     }
     
-    .time-inputs {
-        flex-direction: column;
-        gap: 15px;
+    .tool-btn {
+        flex: 1;
+        min-width: 60px;
     }
 }
 
 @media (max-width: 480px) {
-    .main-title {
-        font-size: 1.8rem;
-        flex-direction: column;
-        gap: 10px;
+    .container {
+        padding: 10px;
     }
     
     .header {
-        flex-direction: column;
-        gap: 20px;
-        text-align: center;
+        padding: 15px 0;
     }
     
-    .time {
-        font-size: 2rem;
+    .main-title {
+        font-size: 20px;
     }
     
-    .calc-btn {
-        padding: 10px;
-        font-size: 0.9rem;
+    .tools-grid {
+        gap: 10px;
     }
     
     .tool-card {
         padding: 15px;
+    }
+    
+    .card-header h3 {
+        font-size: 16px;
+    }
+    
+    .text-stats {
+        flex-direction: column;
+        gap: 8px;
+    }
+}
+
+/* 新工具样式 */
+
+/* 文本处理工具 */
+.text-tools-display {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.text-input-area, .text-output-area {
+    width: 100%;
+}
+
+.text-input, .text-output {
+    width: 100%;
+    min-height: 80px;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background: var(--background-color);
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 14px;
+    resize: vertical;
+    transition: var(--transition);
+}
+
+.text-output {
+    background: var(--surface-color);
+}
+
+.text-input:focus, .text-output:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+.text-tools-controls {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.tool-btn {
+    padding: 8px 16px;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 12px;
+    cursor: pointer;
+    transition: var(--transition);
+    min-width: 70px;
+}
+
+.tool-btn:hover {
+    background: #2980b9;
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-light);
+}
+
+.text-stats {
+    display: flex;
+    gap: 15px;
+    font-size: 12px;
+    color: var(--text-secondary);
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 10px;
+    background: var(--surface-color);
+    border-radius: var(--border-radius);
+}
+
+.stat-item {
+    display: flex;
+    gap: 5px;
+}
+
+.stat-label {
+    color: var(--text-secondary);
+}
+
+.stat-value {
+    color: var(--primary-color);
+    font-weight: 500;
+}
+
+/* 单位转换器 */
+.converter-display {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.converter-input,
+.converter-output {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.converter-input input,
+.converter-output input {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background: var(--card-bg);
+    color: var(--text-primary);
+    font-size: 14px;
+}
+
+.converter-input select,
+.converter-output select {
+    padding: 8px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background: var(--card-bg);
+    color: var(--text-primary);
+    font-size: 14px;
+    min-width: 80px;
+}
+
+.converter-arrow {
+    text-align: center;
+    color: var(--primary-color);
+    font-size: 18px;
+}
+
+.converter-type {
+    padding: 6px 10px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background: var(--card-bg);
+    color: var(--text-primary);
+    font-size: 12px;
+}
+
+/* 二维码生成器 */
+.qrcode-display {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.qr-input textarea {
+    width: 100%;
+    min-height: 60px;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background: var(--card-bg);
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 14px;
+    resize: vertical;
+}
+
+.qr-canvas {
+    min-height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background: var(--card-bg);
+}
+
+.qr-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    text-align: center;
+}
+
+.qr-placeholder i {
+    font-size: 48px;
+    margin-bottom: 10px;
+    opacity: 0.5;
+}
+
+.qr-code-display {
+    text-align: center;
+    padding: 20px;
+}
+
+.qr-pattern {
+    display: inline-block;
+    padding: 10px;
+    background: white;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.qr-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 2px;
+    width: 100px;
+    height: 100px;
+}
+
+.qr-cell {
+    background: #f0f0f0;
+    border-radius: 1px;
+}
+
+.qr-cell.filled {
+    background: #333;
+}
+
+.qr-text {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin: 0;
+    word-break: break-all;
+}
+
+/* 密码生成器 */
+.password-display {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.password-output {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.password-output input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background: var(--card-bg);
+    color: var(--text-primary);
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+}
+
+.copy-password-btn {
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background: var(--card-bg);
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.copy-password-btn:hover {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+.password-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.option-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.option-group label {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.option-group input[type="range"] {
+    width: 100%;
+}
+
+.option-checkboxes {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.option-checkboxes label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--text-primary);
+    cursor: pointer;
+}
+
+/* 颜色工具 */
+.color-display {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.color-picker-area {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.color-picker-area input[type="color"] {
+    width: 50px;
+    height: 50px;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+}
+
+.color-preview {
+    width: 50px;
+    height: 50px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background: #3498db;
+}
+
+.color-values {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.color-value {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.color-value label {
+    min-width: 40px;
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.color-value input {
+    flex: 1;
+    padding: 6px 10px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background: var(--card-bg);
+    color: var(--text-primary);
+    font-size: 12px;
+    font-family: 'Courier New', monospace;
+}
+
+/* Base64编码工具 */
+.base64-display {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.base64-input,
+.base64-output {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.base64-input textarea,
+.base64-output textarea {
+    width: 100%;
+    min-height: 80px;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background: var(--card-bg);
+    color: var(--text-primary);
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    resize: vertical;
+}
+
+.encode-btn,
+.decode-btn {
+    padding: 8px 16px;
+    border: 1px solid var(--primary-color);
+    border-radius: var(--border-radius);
+    background: var(--primary-color);
+    color: white;
+    font-size: 12px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.encode-btn:hover,
+.decode-btn:hover {
+    background: var(--primary-hover);
+    border-color: var(--primary-hover);
+}
+
+/* 数学工具 */
+.math-display {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.math-tool-type {
+    padding: 6px 10px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background: var(--card-bg);
+    color: var(--text-primary);
+    font-size: 12px;
+}
+
+.base-converter {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.base-input {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.base-input input {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background: var(--card-bg);
+    color: var(--text-primary);
+    font-size: 14px;
+    font-family: 'Courier New', monospace;
+}
+
+.base-input select {
+    padding: 8px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background: var(--card-bg);
+    color: var(--text-primary);
+    font-size: 14px;
+}
+
+.base-results {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.base-result {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.base-result label {
+    min-width: 60px;
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.base-result input {
+    flex: 1;
+    padding: 6px 10px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background: var(--card-bg);
+    color: var(--text-primary);
+    font-size: 12px;
+    font-family: 'Courier New', monospace;
+}
+
+/* 通用按钮样式 */
+.download-qr-btn,
+.generate-password-btn,
+.random-color-btn,
+.swap-base64-btn {
+    padding: 6px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background: var(--card-bg);
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: var(--transition);
+    font-size: 12px;
+}
+
+.download-qr-btn:hover,
+.generate-password-btn:hover,
+.random-color-btn:hover,
+.swap-base64-btn:hover {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+/* 响应式适配新工具 */
+@media (max-width: 768px) {
+    .text-tools-controls {
+        justify-content: center;
+    }
+    
+    .tool-btn {
+        flex: 1;
+        min-width: 60px;
+    }
+    
+    .text-stats {
+        justify-content: center;
+        text-align: center;
+    }
+    
+    .converter-input,
+    .converter-output {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .password-output {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .color-picker-area {
+        justify-content: center;
+    }
+    
+    .base-input {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .base-result {
+        flex-direction: column;
+        gap: 5px;
+        text-align: center;
+    }
+    
+    .base-result label {
+        min-width: auto;
     }
 }
 
@@ -1002,5 +1624,553 @@ textarea:focus {
     
     body {
         background: white;
+    }
+}
+
+/* 新工具样式 */
+
+/* 文本处理工具 */
+.text-tools-display {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.text-input-area {
+    width: 100%;
+}
+
+.text-input {
+    width: 100%;
+    height: 120px;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background: var(--background-color);
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 0.9rem;
+    resize: vertical;
+}
+
+.text-tools-controls {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.tool-btn {
+    padding: 8px 16px;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: var(--transition);
+}
+
+.tool-btn:hover {
+    background: #2980b9;
+    transform: translateY(-1px);
+}
+
+.text-stats {
+    display: flex;
+    gap: 15px;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    padding: 8px 0;
+}
+
+/* 单位转换器 */
+.converter-type {
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 6px 12px;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+}
+
+.converter-display {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.converter-input,
+.converter-output {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.converter-input input,
+.converter-output input {
+    flex: 2;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background: var(--background-color);
+    color: var(--text-primary);
+    font-size: 1rem;
+}
+
+.converter-input select,
+.converter-output select {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background: var(--surface-color);
+    color: var(--text-primary);
+}
+
+.converter-arrow {
+    text-align: center;
+    color: var(--primary-color);
+    font-size: 1.2rem;
+}
+
+/* 二维码生成器 */
+.qrcode-display {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.qr-input textarea {
+    width: 100%;
+    height: 80px;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background: var(--background-color);
+    color: var(--text-primary);
+    font-family: inherit;
+    resize: vertical;
+}
+
+.qr-canvas {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+    border: 2px dashed var(--border-color);
+    border-radius: var(--border-radius);
+    background: var(--background-color);
+}
+
+.qr-placeholder {
+    text-align: center;
+    color: var(--text-secondary);
+}
+
+.qr-placeholder i {
+    font-size: 3rem;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.download-qr-btn {
+    background: var(--success-color);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.download-qr-btn:hover {
+    transform: scale(1.1);
+    box-shadow: var(--shadow-light);
+}
+
+/* 密码生成器 */
+.password-display {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.password-output {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.password-output input {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background: var(--background-color);
+    color: var(--text-primary);
+    font-family: 'Courier New', monospace;
+    font-size: 1rem;
+}
+
+.copy-password-btn {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    padding: 12px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.copy-password-btn:hover {
+    background: #2980b9;
+}
+
+.password-options {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.option-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.option-group label {
+    font-size: 0.9rem;
+    color: var(--text-primary);
+}
+
+.option-group input[type="range"] {
+    width: 100%;
+}
+
+.option-checkboxes {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.option-checkboxes label {
+    display: flex;
+    align-items: center;
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    cursor: pointer;
+}
+
+.option-checkboxes input[type="checkbox"] {
+    margin-right: 8px;
+}
+
+.generate-password-btn {
+    background: var(--success-color);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.generate-password-btn:hover {
+    transform: rotate(180deg);
+    box-shadow: var(--shadow-light);
+}
+
+/* 颜色工具 */
+.color-display {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.color-picker-area {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.color-picker-area input[type="color"] {
+    width: 60px;
+    height: 60px;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+}
+
+.color-preview {
+    width: 60px;
+    height: 60px;
+    border-radius: var(--border-radius);
+    border: 2px solid var(--border-color);
+    background: #3498db;
+}
+
+.color-values {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.color-value {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.color-value label {
+    min-width: 40px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.color-value input {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background: var(--background-color);
+    color: var(--text-primary);
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+}
+
+.random-color-btn {
+    background: var(--warning-color);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.random-color-btn:hover {
+    transform: rotate(180deg);
+    box-shadow: var(--shadow-light);
+}
+
+/* Base64编码工具 */
+.base64-display {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.base64-input,
+.base64-output {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.base64-input textarea,
+.base64-output textarea {
+    width: 100%;
+    height: 80px;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background: var(--background-color);
+    color: var(--text-primary);
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    resize: vertical;
+}
+
+.encode-btn,
+.decode-btn {
+    padding: 8px 16px;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: var(--transition);
+    align-self: flex-start;
+}
+
+.encode-btn:hover,
+.decode-btn:hover {
+    background: #2980b9;
+    transform: translateY(-1px);
+}
+
+.swap-base64-btn {
+    background: var(--warning-color);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.swap-base64-btn:hover {
+    transform: rotate(180deg);
+    box-shadow: var(--shadow-light);
+}
+
+/* 数学工具 */
+.math-tool-type {
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 6px 12px;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+}
+
+.math-display {
+    margin-top: 15px;
+}
+
+.base-converter {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.base-input {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.base-input input {
+    flex: 2;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background: var(--background-color);
+    color: var(--text-primary);
+    font-family: 'Courier New', monospace;
+}
+
+.base-input select {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background: var(--surface-color);
+    color: var(--text-primary);
+}
+
+.base-results {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.base-result {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.base-result label {
+    min-width: 60px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.base-result input {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background: var(--background-color);
+    color: var(--text-primary);
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+}
+
+/* 响应式设计 - 新工具 */
+@media (max-width: 768px) {
+    .text-tools-controls {
+        justify-content: center;
+    }
+    
+    .tool-btn {
+        flex: 1;
+        min-width: 80px;
+    }
+    
+    .converter-input,
+    .converter-output {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .converter-input input,
+    .converter-output input,
+    .converter-input select,
+    .converter-output select {
+        width: 100%;
+    }
+    
+    .password-output {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .password-output input,
+    .copy-password-btn {
+        width: 100%;
+    }
+    
+    .color-picker-area {
+        justify-content: center;
+    }
+    
+    .base-input {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .base-input input,
+    .base-input select {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .text-stats {
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .option-checkboxes {
+        gap: 12px;
+    }
+    
+    .color-values {
+        gap: 12px;
+    }
+    
+    .base-results {
+        gap: 12px;
     }
 }
