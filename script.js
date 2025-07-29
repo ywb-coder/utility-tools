@@ -63,6 +63,7 @@ const lastSaved = document.getElementById('lastSaved');
 const themeSelect = document.getElementById('themeSelect');
 const cityInput = document.getElementById('cityInput');
 const animationsToggle = document.getElementById('animationsToggle');
+const languageSelect = document.getElementById('languageSelect');
 
 // 页面加载完成后初始化
 document.addEventListener('DOMContentLoaded', function() {
@@ -111,8 +112,15 @@ function updateClock() {
         month: 'long', 
         day: 'numeric' 
     });
-    const weekdays = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
-    const weekdayString = weekdays[now.getDay()];
+    
+    // 使用多语言星期显示
+    let weekdayString = '星期日';
+    if (window.i18n && window.i18n.t) {
+        const weekdays = window.i18n.t('weekdays');
+        if (Array.isArray(weekdays)) {
+            weekdayString = weekdays[now.getDay()];
+        }
+    }
     
     currentTime.textContent = timeString;
     currentDate.textContent = dateString;
@@ -161,7 +169,7 @@ function addTodo() {
         renderTodos();
         updateTodoStats();
         closeTodoModalHandler();
-        showNotification('待办事项已添加');
+        showNotification(window.i18n ? window.i18n.t('todoAdded') : '待办事项已添加');
     }
 }
 
@@ -458,13 +466,20 @@ function initializeSettings() {
     const savedTheme = localStorage.getItem('theme') || 'light';
     const savedCity = localStorage.getItem('weatherCity') || '北京';
     const savedAnimations = localStorage.getItem('animations') !== 'false';
+    const savedLanguage = localStorage.getItem('language') || 'zh-CN';
     
     themeSelect.value = savedTheme;
     cityInput.value = savedCity;
     animationsToggle.checked = savedAnimations;
+    if (languageSelect) languageSelect.value = savedLanguage;
     
     applyTheme(savedTheme);
     applyAnimationSettings(savedAnimations);
+    
+    // 初始化语言
+    if (window.i18n) {
+        window.i18n.switchLanguage(savedLanguage);
+    }
 }
 
 function applyTheme(theme) {
@@ -563,6 +578,16 @@ function initializeEventListeners() {
         localStorage.setItem('animations', enabled);
         applyAnimationSettings(enabled);
     });
+    
+    // 语言切换
+    if (languageSelect) {
+        languageSelect.addEventListener('change', (e) => {
+            const language = e.target.value;
+            if (window.i18n) {
+                window.i18n.switchLanguage(language);
+            }
+        });
+    }
     
     // 模态框外部点击关闭
     document.addEventListener('click', (e) => {

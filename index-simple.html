@@ -6,6 +6,7 @@
     <title>实用工具箱 - 现代化工具集合</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
+    <script src="languages.js"></script>
 </head>
 <body>
     <!-- 主容器 -->
@@ -158,6 +159,105 @@
                 </div>
             </div>
         </main>
+    </div>
+
+    <!-- 设置面板 -->
+    <div class="settings-panel" id="settingsPanel">
+        <div class="settings-content">
+            <div class="settings-header">
+                <h3>设置</h3>
+                <button class="close-settings-btn" id="closeSettingsBtn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="settings-body">
+                <div class="setting-item">
+                    <label for="themeSelect">主题模式</label>
+                    <select id="themeSelect">
+                        <option value="light">浅色模式</option>
+                        <option value="dark">深色模式</option>
+                        <option value="auto">跟随系统</option>
+                    </select>
+                </div>
+                <div class="setting-item">
+                    <label for="cityInput">城市设置</label>
+                    <input type="text" id="cityInput" placeholder="输入城市名称">
+                </div>
+                <div class="setting-item">
+                    <label>
+                        <input type="checkbox" id="animationsToggle" checked>
+                        启用动画效果
+                    </label>
+                </div>
+                <div class="setting-item">
+                    <label for="languageSelect">语言</label>
+                    <select id="languageSelect">
+                        <option value="zh-CN">🇨🇳 简体中文</option>
+                        <option value="en">🇺🇸 English</option>
+                        <option value="es">🇪🇸 Español</option>
+                        <option value="ko">🇰🇷 한국어</option>
+                        <option value="ja">🇯🇵 日本語</option>
+                        <option value="nl">🇳🇱 Nederlands</option>
+                        <option value="pt">🇵🇹 Português</option>
+                        <option value="th">🇹🇭 ไทย</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 待办事项添加弹窗 -->
+    <div class="modal" id="todoModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>添加待办事项</h3>
+                <button class="close-modal-btn" id="closeTodoModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="text" id="todoInput" placeholder="输入待办事项..." maxlength="100">
+                <div class="todo-options">
+                    <label>
+                        <input type="checkbox" id="todoUrgent">
+                        <span class="checkmark"></span>
+                        紧急任务
+                    </label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelTodoBtn">取消</button>
+                <button class="btn btn-primary" id="confirmTodoBtn">添加</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 倒计时设置弹窗 -->
+    <div class="modal" id="timerModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>设置倒计时</h3>
+                <button class="close-modal-btn" id="closeTimerModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="time-inputs">
+                    <div class="time-input-group">
+                        <label>分钟</label>
+                        <input type="number" id="minutesInput" min="0" max="59" value="5">
+                    </div>
+                    <div class="time-input-group">
+                        <label>秒钟</label>
+                        <input type="number" id="secondsInput" min="0" max="59" value="0">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelTimerBtn">取消</button>
+                <button class="btn btn-primary" id="confirmTimerBtn">确定</button>
+            </div>
+        </div>
     </div>
 
     <script src="script.js"></script>
